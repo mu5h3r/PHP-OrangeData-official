@@ -210,52 +210,72 @@ class orangedata_client {
      *  @return $this
      *  @throws Exception
      */
-    public function add_agent_to_order($agentType, $payTOP, $payAO, $payAPN, $payOPN, $payON, $payOA, $payOpINN, $supPN) {
+    public function add_agent_to_order($agentType, $payTOP = null, $payAO = null, $payAPN = null, $payOPN = null,
+                                       $payON = null, $payOA = null, $payOpINN = null, $supPN = null) {
         if ($agentType > 0 and $agentType < 128) {
             $this->order_request->content->agentType = $agentType;
         } else {
             throw new Exception('Invalid agentType' . PHP_EOL);
         }
-        for ($i = 0; $i < count($payTOP); $i++) {
-            if (!preg_match('/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/', $payTOP[$i]))
-                throw new Exception('Invalid paymentTransferOperatorPhoneNumbers' . PHP_EOL);
-            if ($i == count($payTOP) - 1) {
-                $this->order_request->content->paymentTransferOperatorPhoneNumbers = $payTOP;
+
+        if (!empty($payTOP)) {
+            for ($i = 0; $i < count($payTOP); $i++) {
+                if (!preg_match('/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/', $payTOP[$i]))
+                    throw new Exception('Invalid paymentTransferOperatorPhoneNumbers' . PHP_EOL);
+                if ($i == count($payTOP) - 1) {
+                    $this->order_request->content->paymentTransferOperatorPhoneNumbers = $payTOP;
+                }
             }
         }
-        if (strlen($payAO) > 0 and strlen($payAO) < 25) {
-            $this->order_request->content->paymentAgentOperation = $payAO;
-        } else {
-            throw new Exception('Invalid paymentAgentOperation' . PHP_EOL);
-        }
-        for ($i = 0; $i < count($payAPN); $i++) {
-            if (!preg_match('/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/', $payAPN[$i]))
-                throw new Exception('Invalid paymentAgentPhoneNumbers' . PHP_EOL);
-            if ($i == count($payAPN) - 1) {
-                $this->order_request->content->paymentAgentPhoneNumbers = $payAPN;
+
+        if (!empty($payAO)) {
+            if (strlen($payAO) > 0 and strlen($payAO) < 25) {
+                $this->order_request->content->paymentAgentOperation = $payAO;
+            } else {
+                throw new Exception('Invalid paymentAgentOperation' . PHP_EOL);
             }
         }
-        for ($i = 0; $i < count($payOPN); $i++) {
-            if (!preg_match('/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/', $payOPN[$i]))
-                throw new Exception('Invalid paymentOperatorPhoneNumbers' . PHP_EOL);
-            if ($i == count($payOPN) - 1) {
-                $this->order_request->content->paymentOperatorPhoneNumbers = $payOPN;
+
+        if (!empty($payAPN)) {
+            for ($i = 0; $i < count($payAPN); $i++) {
+                if (!preg_match('/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/', $payAPN[$i]))
+                    throw new Exception('Invalid paymentAgentPhoneNumbers' . PHP_EOL);
+                if ($i == count($payAPN) - 1) {
+                    $this->order_request->content->paymentAgentPhoneNumbers = $payAPN;
+                }
             }
         }
-        if (strlen($payON) > 0 && strlen($payON) < 65 and strlen($payOA) && strlen($payOA) < 245 and strlen($payOpINN) > 9 && strlen($payOpINN) != 11 && strlen($payOpINN) < 13) {
-            $this->order_request->content->paymentOperatorName = $payON;
-            $this->order_request->content->paymentOperatorAddress = $payOA;
-            $this->order_request->content->paymentOperatorINN = $payOpINN;
-        } else {
-            throw new Exception('Invalid paymentOperatorName, paymentOperatorAddress or paymentOperatorINN' . PHP_EOL);
-        }
-        for ($i = 0; $i < count($supPN); $i++) {
-            if (!preg_match('/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/', $supPN[$i]))
-                throw new Exception('Invalid supplierPhoneNumbers' . PHP_EOL);
-            if ($i == count($supPN) - 1) {
-                $this->order_request->content->supplierPhoneNumbers = $supPN;
+
+        if (!empty($payOPN)) {
+            for ($i = 0; $i < count($payOPN); $i++) {
+                if (!preg_match('/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/', $payOPN[$i]))
+                    throw new Exception('Invalid paymentOperatorPhoneNumbers' . PHP_EOL);
+                if ($i == count($payOPN) - 1) {
+                    $this->order_request->content->paymentOperatorPhoneNumbers = $payOPN;
+                }
             }
         }
+
+        if (!empty($payON)) {
+            if (strlen($payON) > 0 && strlen($payON) < 65 and strlen($payOA) && strlen($payOA) < 245 and strlen($payOpINN) > 9 && strlen($payOpINN) != 11 && strlen($payOpINN) < 13) {
+                $this->order_request->content->paymentOperatorName = $payON;
+                $this->order_request->content->paymentOperatorAddress = $payOA;
+                $this->order_request->content->paymentOperatorINN = $payOpINN;
+            } else {
+                throw new Exception('Invalid paymentOperatorName, paymentOperatorAddress or paymentOperatorINN' . PHP_EOL);
+            }
+        }
+
+        if (!empty($supPN)) {
+            for ($i = 0; $i < count($supPN); $i++) {
+                if (!preg_match('/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/', $supPN[$i]))
+                    throw new Exception('Invalid supplierPhoneNumbers' . PHP_EOL);
+                if ($i == count($supPN) - 1) {
+                    $this->order_request->content->supplierPhoneNumbers = $supPN;
+                }
+            }
+        }
+
         return $this;
     }
 
