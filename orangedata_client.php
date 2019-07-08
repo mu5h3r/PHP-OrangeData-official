@@ -13,17 +13,17 @@ use \Exception;
 
 class orangedata_client {
 
-    private $order_request;
-    private $correction_request;
-    private $api_url;
-    private $inn;
-    private $debug_file;
-    private $debug = false;
-    private $ca_cert = false;
-    private $private_key_pem;
-    private $client_pkey;
-    private $client_cert;
-    private $client_cert_pass;
+    protected $order_request;
+    protected $correction_request;
+    protected $api_url;
+    protected $inn;
+    protected $debug_file;
+    protected $debug = false;
+    protected $ca_cert = false;
+    protected $private_key_pem;
+    protected $client_pkey;
+    protected $client_cert;
+    protected $client_cert_pass;
 
     /**
      * @param mixed $inn
@@ -381,7 +381,7 @@ class orangedata_client {
         return $return;
     }
 
-    private function sign_order_request($jsonstring) {
+    protected function sign_order_request($jsonstring) {
         $binary_signature = "";
         $r = openssl_sign($jsonstring, $binary_signature, file_get_contents($this->private_key_pem), OPENSSL_ALGO_SHA256);
         if ($r) {
@@ -398,7 +398,7 @@ class orangedata_client {
      *  @return string
      *  @throws Exception
      */
-    private function edit_url($port, $tag) {
+    protected function edit_url($port, $tag) {
         if ($port == 2443 or $port == 12001){
             $tag ? $url = 'https://apip.orangedata.ru:' . $port . '/api/v2/documents/' : $url = 'https://apip.orangedata.ru:' . $port . '/api/v2/corrections/';
         } elseif ($port == 12003) {
@@ -409,7 +409,7 @@ class orangedata_client {
         return $url;
     }
 
-    private function prepare_curl($url) {
+    protected function prepare_curl($url) {
         $curl = curl_init($url);
         curl_setopt_array($curl, array(
             CURLOPT_SSLKEY => $this->client_pkey,
