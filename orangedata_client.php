@@ -223,7 +223,7 @@ class orangedata_client {
 
     if (!is_numeric($quantity)) $errors[] = 'position.quantity - ' . ($quantity ? 'invalid value "' . $quantity . '"' : 'is required');
     if (!is_numeric($price)) $errors[] = 'position.price - ' . ($price ? 'invalid value "' . $price . '"' : 'is required');
-    if (!preg_match('/^[123456]{1}$/', $tax)) $errors[] = 'position.tax - ' . ($tax ? 'invalid value "' . $tax . '"' : 'is required');
+    if (!preg_match('/^(1|2|3|4|5|6|7|8|9|10)$/', $tax)) $errors[] = 'position.tax - ' . ($tax ? 'invalid value "' . $tax . '"' : 'is required');
     if (!$text or mb_strlen($text) > self::MAX_POSITION_TEXT_LENGTH) $errors[] = 'position.text - ' . ($text ? 'maxLength is ' . self::MAX_POSITION_TEXT_LENGTH : 'is required');
     if (!(preg_match('/^[1-7]$/', $paymentMethodType) or is_null($paymentMethodType))) $errors[] = 'position.paymentMethodType - invalid value "' . $paymentMethodType . '"';
     if (!is_null($paymentSubjectType) && !is_int($paymentSubjectType)) $errors[] = 'position.paymentSubjectType - invalid value "' . $paymentSubjectType . '"';
