@@ -323,6 +323,9 @@ class orangedata_client {
     $payment = new \stdClass();
     $payment->type = (int) $type;
     $payment->amount = (float) $amount;
+    if (isset($params['taxationSystem'])) {
+      $payment->taxationSystem = $params['taxationSystem'];
+    }
     $this->order_request->content->checkClose->payments[] = $payment;
 
     return $this;
