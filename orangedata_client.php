@@ -441,7 +441,7 @@ class orangedata_client {
             if ($customerInfo)
             {
                 if ($customerInfo['name'] && mb_strlen($customerInfo['name']) > self::MAX_CUSTOMER_INFO_NAME_LENGTH) $errors[] = 'customerInfo.name - maxLength is ' . self::MAX_CUSTOMER_INFO_NAME_LENGTH;
-                if ($customerInfo['inn'] && strlen($customerInfo['inn']) !== 10 && strlen($customerInfo['inn']) !== 12) $errors[] = 'customerInfo.inn - length need to be 10 or 12';
+                if ($customerInfo['inn'] && preg_match('/^(([0-9]{10})|([0-9]{12}))(_[0-9]+)?$/', $customerInfo['inn']) == false) $errors[] = 'customerInfo.inn - length need to be 10 or 12 or 10/12 with _<[0-9]+>';
                 if ($customerInfo['birthDate'] && !preg_match('/^(0?[1-9]|[12][0-9]|3[01]).(0?[1-9]|1[012]).((19|20)\d\d)$/', $customerInfo['birthDate'])) $errors[] = 'customerInfo.birthDate - invalid value ' . $customerInfo['birthDate'];
                 if ($customerInfo['citizenship'] && mb_strlen($customerInfo['citizenship']) > self::MAX_CUSTOMER_INFO_CITIZENSHIP_LENGTH) $errors[] = 'customerInfo.citizenship - maxLength is ' . self::MAX_CUSTOMER_INFO_CITIZENSHIP_LENGTH;
                 if ($customerInfo['identityDocumentCode'] && mb_strlen($customerInfo['identityDocumentCode']) > 2) $errors[] = 'customerInfo.identityDocumentCode - maxLength is 2';

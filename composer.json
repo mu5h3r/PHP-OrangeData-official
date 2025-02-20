@@ -1,6 +1,6 @@
 {
     "name": "orangedata/orangedata-client",
-    "version": "4.0.2",
+    "version": "4.0.3",
     "description": "Example client API class for OrangeData project",
     "type": "library",
     "authors": [
