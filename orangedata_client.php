@@ -116,7 +116,7 @@ class orangedata_client {
     $errors = [];
 
     if (!$id || strlen($id) > self::MAX_ID_LENGTH) $errors[] = 'id - ' . ($id ? 'maxLength is ' . self::MAX_ID_LENGTH : 'is required');
-    if (!$this->inn || (strlen($this->inn ) !== 10 && strlen($this->inn ) !== 12)) $errors[] = 'inn - ' . ($this->inn ? 'length need to be 10 or 12' : 'is required');
+    if (!$this->inn || preg_match('/^([0-9]{10})|([0-9]{12})(_[0-9]+)?$/', $this->inn) == false) $errors[] = 'inn - ' . ($this->inn ? 'length need to be 10 or 12 and optional suffix _<[0-9]+>' : 'is required');
     if ($group && strlen($group) > self::MAX_GROUP_LENGTH) $errors[] = 'group - maxLength is ' . self::MAX_GROUP_LENGTH;
     if (!$key || strlen($key) > self::MAX_KEY_LENGTH) $errors[] = 'key - ' . ($key ? 'maxLength is ' . self::MAX_KEY_LENGTH : 'is required');
     if (!is_int($type) && !preg_match('/^[1234]$/', $type)) $errors[] = 'content.type - invalid value';
